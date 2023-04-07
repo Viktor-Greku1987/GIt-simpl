@@ -325,18 +325,13 @@ def calling_converter(text):
     if lst_rezult_chek != []:
         text = text.split()
         text = ' '.join(text)
-        # text_2 = text.replace(" ", "+")
+
         text_2 = text.split('+')
         print("text", text)
-        #potok = threading.Thread(target=calling_converter, args=text)
-        #potok.start()
-        #con = converter_text.clock_1
+
         potok = threading.Thread(target=converter_text.clock_1, args=text_2)
         potok.start()
-        #converter_text.clock_1(text)
-        #potok_2  = threading.Thread(target=con, args=text )
-        #potok_2.start()
-        #converter_text.clock_1()
+
         return True
     else:
         return False
