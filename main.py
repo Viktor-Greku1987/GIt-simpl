@@ -26,6 +26,7 @@ import converter_text
 # библиотека проверки имени
 import check_name
 import recognition
+import camera
 name_user = ''
 
 
@@ -336,6 +337,24 @@ def calling_converter(text):
     else:
         return False
 
+def calling_camera(text):
+    text_1 = text.split()
+    potok_list = []
+    for u in text_1:
+        potok_list.append(u)
+    lst_chek = ["включи", "включите", "запусти", "запустите"]
+    lst_chek_2 =["вебку", "вебкамеру", "видео", "видеофиксацию", "видеонаблюдение", "веб-камеру", "камеру"]
+    lst_rezult_chek = list(set(lst_chek) & set(potok_list))
+    lst_rezult_chek_2 = list(set(lst_chek_2) & set(potok_list))
+    if lst_rezult_chek != []:
+        if lst_rezult_chek_2 != []:
+            potok = threading.Thread(target=camera.VideoCap() )
+            potok.start()
+
+        return True
+    else:
+        return False
+
 
 # ф-ция обработки текста и выделения из них команд
 def comands(text):
@@ -343,7 +362,7 @@ def comands(text):
     if name_user == '':
         first_hi(text)
     else:
-         if hi_goodby(text) or weather(text) or play_file(text) or goole_search(text) or calling_converter(text):
+         if hi_goodby(text) or weather(text) or play_file(text) or goole_search(text) or calling_converter(text) or calling_camera(text):
             print(answer)
             engin = init_engine()
             sound(engin, answer)
