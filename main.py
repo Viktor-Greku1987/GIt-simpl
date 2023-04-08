@@ -50,7 +50,7 @@ def shutdown_PK(text = str, waiting_time=100):
 answer = ''
 #recognition.recognition_un()
 
-greeting_BM = ' Вижу вас как на яву! Мое имя, доктор кто. Я голосовой помошник. Давайте познакомимся. Как вас зовут?'
+greeting_BM = ' Вижу вас как на яву! Мое имя Макс. Я голосовой помошник. Давайте познакомимся. Как вас зовут?'
 print(greeting_BM)
 engin = recognition.init_engine()
 recognition.sound(engin, greeting_BM)
@@ -348,8 +348,8 @@ def calling_camera(text):
     lst_rezult_chek_2 = list(set(lst_chek_2) & set(potok_list))
     if lst_rezult_chek != []:
         if lst_rezult_chek_2 != []:
-            potok = threading.Thread(target=camera.VideoCap() )
-            potok.start()
+            potok_3 = threading.Thread(target=camera.VideoCap )
+            potok_3.start()
 
         return True
     else:
