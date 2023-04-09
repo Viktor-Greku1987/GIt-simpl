@@ -106,7 +106,7 @@ def first_hi(text):
     engin = init_engine()
     sound(engin, first_greeting_1)
 
-    greeting_BM = 'Мое имя, доктор кто . Я голосовой помошник. Как вас зовут?'
+    greeting_BM = 'Мое имя, Макс . Я голосовой помошник. Как вас зовут?'
     print(greeting_BM)
     engin = init_engine()
     sound(engin, greeting_BM)
@@ -121,10 +121,6 @@ def first_hi(text):
 def hi_goodby(text):
     global answer
     #global name_user
-
-
-
-
     morning = [ 'привет','доброго утра', 'хорошего утра']
     day = ['привет','добрый день', 'хорошего дня']
     evening = ['привет','добрый вечер', 'хорошего вечера']
@@ -132,7 +128,6 @@ def hi_goodby(text):
     goodbye = ['досвидания', 'всего вам хорошего', 'всего хорошего', 'пока', 'до скорого', 'прощайте']
 
     answer = ''
-
 
     if text in morning or text in day or text in evening or text in night:
         # получаем текущее время на компьтере
@@ -283,8 +278,10 @@ def weather(text):
     global answer
     answer = ''
     text = text.split()
+    pogoda = ["погода", "погоды", "погоду"]
     text[1]= text[1][0].upper()+text[1][1::]
-    if text[0] != 'погода':
+    check_pogoda = list(set(pogoda)&set(text))
+    if check_pogoda == [] :
         return False
     # перевдем название города русского языка на наглийский
     # при вызове переовза можно указать следующие параметры:
@@ -300,7 +297,8 @@ def weather(text):
     # указать полученый API-ключ отсайта
     appid = 'ecf8f7c99b22ef5a327aa9d6f296cc4c'
     new_taxt = ' '.join(text[2::])
-    if new_taxt == 'на один день':
+    one_day = 'на один день'
+    if text in one_day:
         answer = current_weather(appid, name_syti.text + ',RU', text[1])
     elif new_taxt == 'на пять дней':
         answer = weather_on_5_day(appid, name_syti.text + ',RU', text[1])
