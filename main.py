@@ -351,7 +351,7 @@ def weather(text):
         file.write(answer)
     return answer != ''
 
-weather('прогноз погоды в москве на 1 день кратко ')
+#weather('прогноз погоды в москве на 1 день кратко ') # проверка работы функции
 
 def calling_converter(text):
     text_1 = text.split()
