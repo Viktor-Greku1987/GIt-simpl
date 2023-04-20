@@ -332,8 +332,8 @@ def weather(text):
     print("text : ", text)
     one_day = '1 день' # условие получения погоды на 1 день
     five_day = 'на 5 дней'
-    one_day_detail = 'на один день подробно'
-    five_day_brief = 'на пять дней кратко'
+    one_day_detail = 'на 1 день подробно'
+    five_day_brief = 'на 5 дней кратко'
     if one_day  in text:
         answer = current_weather(appid, name_syti + ',RU', text_city)
         print("answer : ", answer)
