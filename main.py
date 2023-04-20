@@ -20,37 +20,29 @@ from datetime import datetime
 # работа с потоками
 import threading
 # подключение гуглпереводчика
-from googletrans import  Translator
+from googletrans import Translator
+from translate import Translator
 # собственная библиотека по преобразовании команды на квлючение ПК через какое-то или в какое-то время
 import converter_text
 # библиотека проверки имени
 import check_name
 import recognition
 import camera
+# бибилиотека городов. Применяется при поределении города в котором нужно сделать прогноз погоды
+import geonamescache
+# библиотека по получению нормальной (начальной формы слова)
+import pymorphy2
 name_user = ''
 
 
 
 
-'''
 
-def shutdown_PK(text = str, waiting_time=100):
-    minuta = 0
-    key_value = {"key_value": ['выключи', 'выключение']}
-    text = text.split()
-    if text != key_value:
-        return ''
-    while minuta < waiting_time:
-        time.sleep(60)
-        minuta += 1
-    os.system('shutdown -s')
-    potok = threading.Thread(target=shutdown_PK, args=waiting_time)
-    return potok.start()
-'''
+
 answer = ''
 #recognition.recognition_un()
 
-greeting_BM = ' Вижу вас как на яву! Мое имя Макс. Я голосовой помошник. Давайте познакомимся. Как вас зовут?'
+greeting_BM = ' Вижу вас как на яву! Мое имя Максим. Я голосовой помошник. Давайте познакомимся. Как вас зовут?'
 print(greeting_BM)
 engin = recognition.init_engine()
 recognition.sound(engin, greeting_BM)
@@ -106,7 +98,7 @@ def first_hi(text):
     engin = init_engine()
     sound(engin, first_greeting_1)
 
-    greeting_BM = 'Мое имя, Макс . Я голосовой помошник. Как вас зовут?'
+    greeting_BM = 'Мое имя, Максим . Я голосовой помошник. Как вас зовут?'
     print(greeting_BM)
     engin = init_engine()
     sound(engin, greeting_BM)
@@ -114,7 +106,7 @@ def first_hi(text):
     text_name = recognition.recognition_un()
     name_user = check_name.check_name(text_name)
     print("name_user : ", name_user)
-    return name_user
+    return True
 
 
 # ф-ция на наличе приветввия или прощания
@@ -276,43 +268,90 @@ def weather_on_1_day_extended(appid, s_city='Moscow,RU', Ru_siti=''):
 
 def weather(text):
     global answer
+
     answer = ''
     text = text.split()
-    pogoda = ["погода", "погоды", "погоду"]
-    text[1]= text[1][0].upper()+text[1][1::]
+    print("text", text)
+    pogoda = ["погода", "погоды", "погоду", "прогноз"]
+    #text[1]= text[1][0].upper()+text[1][1::]
     check_pogoda = list(set(pogoda)&set(text))
+    print("check_pogoda:", check_pogoda)
     if check_pogoda == [] :
         return False
-    # перевдем название города русского языка на наглийский
-    # при вызове переовза можно указать следующие параметры:
-    # src - исходный язык(если не указан конкретный язык система автомтичечки будет его распозновать)
-    # dest - язык на кокой переводи(по умолчанию английский)
-    # origin  - текст , который необходимо превести
-    # создадим объект для переводчка
-    trans = Translator()
-    # произведем перевод
-    print(text[1])
-    name_syti = trans.translate(text[1])
-    print(name_syti)
+
     # указать полученый API-ключ отсайта
     appid = 'ecf8f7c99b22ef5a327aa9d6f296cc4c'
-    new_taxt = ' '.join(text[2::])
-    one_day = 'на один день'
-    if text in one_day:
-        answer = current_weather(appid, name_syti.text + ',RU', text[1])
-    elif new_taxt == 'на пять дней':
-        answer = weather_on_5_day(appid, name_syti.text + ',RU', text[1])
-    elif new_taxt == "на один день расширенная":
-        answer = weather_on_1_day_extended(appid, name_syti.text + ',RU', text[1])
-    elif new_taxt == 'на пять дней кратко':
-        answer = weather_on_5_day_briefly(appid, name_syti.text + ',RU', text[1])
+    #new_taxt = ' '.join(text[2::])
+
+    city_ru_1 = open("C:/Python_work/voice-assistant/City_RU.txt")
+    city_lst_ru = []
+    city_ist_list = []
+    for carent_city in city_ru_1:
+        city_lst_ru.append(carent_city.lower())
+
+    for i in range(0, len(city_lst_ru)):
+        if city_lst_ru[i][-1] == "\n":
+            city_lst_ru[i] = city_lst_ru[i][0:-1]
+
+    for city_ist in city_lst_ru:
+        city_ist_list.append(city_ist)
+
+    city_ist_list = ' '.join(city_ist_list[0:len(city_ist_list)])
+    city_ist_list = city_ist_list.split()
+    morph = pymorphy2.MorphAnalyzer()
+    elem_lst = []
+    #text = text.split()
+    word_list = []
+    result_list = []
+    for i in text:
+        word_list.append(i)
+    for ii in word_list:
+        p = morph.parse(ii)[0]
+        res = p.normal_form
+        result_list.append(res)
+    for elem in result_list:
+        elem_lst.append(elem)
+
+    elem_lst = ' '.join(elem_lst[0: len(elem_lst)])
+    elem_lst = elem_lst.split()
+
+    lst_carent_city = list(set(city_ist_list) & set(elem_lst))
+    print("lst_carent_city : ", lst_carent_city)
+    if lst_carent_city:
+        text_city = lst_carent_city[0]
+
+    print(text_city)
+    #text_city = ' '.join(text_city[0:len(text_city)])
+
+    # создадим объект для переводчка
+    trans = Translator(from_lang="ru", to_lang="en")
+    name_syti = trans.translate(text_city)
+    name_syti = ''.join(name_syti[0:len(name_syti)])
+    print(name_syti)
+    text = ' '.join(text[0:len(text)])
+    print("text : ", text)
+    one_day = '1 день' # условие получения погоды на 1 день
+    five_day = 'на 5 дней'
+    one_day_detail = 'на один день подробно'
+    five_day_brief = 'на пять дней кратко'
+    if one_day  in text:
+        answer = current_weather(appid, name_syti + ',RU', text_city)
+        print("answer : ", answer)
+    elif five_day in text :
+        answer = weather_on_5_day(appid, name_syti + ',RU', text_city)
+    elif one_day_detail in text:
+        answer = weather_on_1_day_extended(appid, name_syti + ',RU', text_city)
+    elif five_day_brief in text:
+        answer = weather_on_5_day_briefly(appid, name_syti + ',RU', text_city)
     current_date = datetime.now()
     current_date = str(current_date).split('.')[0]
     current_date = current_date.replace(':','_')
     # запишем данные в файл (параметр 'w' указывает на перезщапись файла, если паратмтер 'a' - дозапись файла(добавление новой записи в документ))
-    with open('Погода\Погода ' + text[1]+ " "  + current_date +'.txt', 'w') as file:
+    with open('C:/Python_work/voice-assistant/Погода/Погода ' + text_city+ " "  + current_date +'.txt', 'w') as file:
         file.write(answer)
     return answer != ''
+
+weather('прогноз погоды в москве на 1 день кратко ')
 
 def calling_converter(text):
     text_1 = text.split()
@@ -385,7 +424,7 @@ def file_search(my_path, name_file, expansion):
                 if new_file.find(name_file)>-1:
                     list_file.append(name)
 
-# ф-ция нахоженич всех файлов по запросу на ПК и отображения результатов пользовотилю
+# ф-ция нахождения всех файлов по запросу на ПК и отображения результатов пользовотилю
 def play_file(text):
     # команда для поиска файлов: файл,вид документа,название документа
     list_data = text.split()
@@ -481,7 +520,7 @@ def recognize_speech():
             sound(engin, comad)
             print(comad)
             # получим данные с миукрофона ввиде аудиопересменной
-            audio = recognizer.listen(microphon, 5,5)
+            audio = recognizer.listen(microphon)
         except Exception as ex:
             print('ошибка : ', ex)
             return ''
@@ -493,15 +532,17 @@ def recognize_speech():
 #print(answer)
 #goole_search('онлайн Дом')
 #print(answer)
-'''
-engin = init_engine()
-#sound(engin, "Привет , как у тебя дела, какая у тебя дома погода и сколько тебе лет")
-#print(googletrans.LANGUAGES)
-'''
+
 
 while True:
     text = recognize_speech()
-    comands(text)
+    if "максим" in text:
+        text = text.split()
+        for mks, id_mks in enumerate(text):
+            if id_mks == "максим":
+                text = ' '.join(text[mks+1:len(text)])
+                print(text)
+                comands(text)
 
 
 #play_file('файл текст виктор')

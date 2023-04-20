@@ -5,6 +5,12 @@ import pyttsx3
 recognizer = speech_recognition.Recognizer()
 microphon = speech_recognition.Microphone()
 
+def sound(engin, name):
+    # вызываем функцию синтеза тектста в речь
+    engin.say(name)
+    # воспроизводим полученное аудио
+    engin.runAndWait()
+
 def recognition_un():
     with microphon:
         data = ''
@@ -12,8 +18,10 @@ def recognition_un():
         recognizer.adjust_for_ambient_noise(microphon, duration=2)
         try:
             # получим данные с миукрофона ввиде аудиопересменной
-            print("прошу, произнесите ответ")
-            audio = recognizer.listen(microphon, 5, 5)
+            p = "прошу, произнесите ответ"
+            sound(engin, p)
+            audio = recognizer.listen(microphon)
+            # audio = recognizer.listen(microphon, 5, 5)
         except Exception as ex:
             print('Я вас не расслышал. Посторите : ', ex)
             return ''
@@ -47,8 +55,3 @@ def init_engine():
     #help(engin)
     return engin
 
-def sound(engin, name):
-    # вызываем функцию синтеза тектста в речь
-    engin.say(name)
-    # воспроизводим полученное аудио
-    engin.runAndWait()
