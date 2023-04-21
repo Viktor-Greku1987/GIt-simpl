@@ -30,8 +30,12 @@ import recognition
 import camera
 # бибилиотека городов. Применяется при поределении города в котором нужно сделать прогноз погоды
 import geonamescache
-# библиотека по получению нормальной (начальной формы слова)
+# библиотека по получению нормальной (начальной формы) слова
 import pymorphy2
+# модуль, подключающий запись видео
+import video_recording
+# модуль, подключающий скрытую запись видео
+import hidden_shooting
 name_user = ''
 
 
@@ -348,7 +352,7 @@ def weather(text):
     current_date = str(current_date).split('.')[0]
     current_date = current_date.replace(':','_')
     # запишем данные в файл (параметр 'w' указывает на перезщапись файла, если паратмтер 'a' - дозапись файла(добавление новой записи в документ))
-    with open('C:/Python_work/voice-assistant/Погода/Погода ' + text_city+ " "  + current_date +'.txt', 'w') as file:
+    with open('Погода/Погода ' + text_city+ " "  + current_date +'.txt', 'w') as file:
         file.write(answer)
     return answer != ''
 
@@ -382,12 +386,22 @@ def calling_camera(text):
         potok_list.append(u)
     lst_chek = ["включи", "включите", "запусти", "запустите"]
     lst_chek_2 =["вебку", "вебкамеру", "видео", "видеофиксацию", "видеонаблюдение", "веб-камеру", "камеру"]
+    lst_chek_3_record = ['видезапись', "запись", "видефиксацию"]
+    lst_chek_4_hidden_shooting = ['скрытая', 'скрытую', "видеосъемку"]
     lst_rezult_chek = list(set(lst_chek) & set(potok_list))
     lst_rezult_chek_2 = list(set(lst_chek_2) & set(potok_list))
+    lst_rezult_record_3 = list(set(lst_chek_3_record) & set(potok_list))
+    lst_rezult_hidden_shooting_4 = list(set(lst_chek_4_hidden_shooting) & set(potok_list))
     if lst_rezult_chek != []:
         if lst_rezult_chek_2 != []:
             potok_3 = threading.Thread(target=camera.VideoCap )
             potok_3.start()
+        elif lst_rezult_record_3 !=[]:
+            potok_4 = threading.Thread(target=video_recording.record_video)
+            potok_4.start()
+        elif lst_rezult_hidden_shooting_4 !=[]:
+            potok_5 = threading.Thread(target=hidden_shooting.record_hidden)
+            potok_5.start()
 
         return True
     else:
@@ -556,10 +570,12 @@ while True:
                 print(text)
                 comands(text)
 
-
 #play_file('файл текст виктор')
 #print(list_file)
 #file_search('C:\Python_version2\independent_work_2','2','py')
 # print('вы сказади :', recognize_speech())
 #init_engine()
-
+'''
+with open('Погода/TTTT.txt', 'w') as file:
+    file.write("answer")
+'''

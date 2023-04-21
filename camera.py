@@ -11,9 +11,9 @@ def VideoCap():
     while True:
         ret, img = cap.read()
         #  преобразуем кадр в градацию серовго
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        cv2.imshow("camera", gray)
-        #cv2.imshow("camera", img)
+        #gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) #этой настройкой можно мнять градацию цвета
+        #cv2.imshow("camera", gray)
+        cv2.imshow("camera", img)
         if cv2.waitKey(10) == 27:
            break
     cap.release()
