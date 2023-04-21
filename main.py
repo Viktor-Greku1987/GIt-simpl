@@ -331,10 +331,11 @@ def weather(text):
     text = ' '.join(text[0:len(text)])
     print("text : ", text)
     one_day = '1 день' # условие получения погоды на 1 день
+    one_day1 = 'один день'
     five_day = 'на 5 дней'
     one_day_detail = 'на 1 день подробно'
     five_day_brief = 'на 5 дней кратко'
-    if one_day  in text:
+    if one_day or one_day1  in text:
         answer = current_weather(appid, name_syti + ',RU', text_city)
         print("answer : ", answer)
     elif five_day in text :
@@ -505,6 +506,16 @@ def goole_search(name_search=''):
     sound(engin, inf_open)
     url = result_url[0].get('link')
     webbrowser.open(url)
+    engine = init_engine()
+    sound(engine, 'результаты запроса сохраним для вас в фа́йл: гугл')
+    n = 0
+    p = ''
+    for data_resul in result_url:
+        n += 1
+        p += str(n) + ') ' + data_resul.get('title') + '\n' + data_resul.get('link') + '\n'
+
+    with open('C:/Python_work/voice-assistant/Запросы/googl.txt', 'w') as file:
+        file.write(p)
     return True
 
 # функция распозания речи
@@ -521,6 +532,7 @@ def recognize_speech():
             print(comad)
             # получим данные с миукрофона ввиде аудиопересменной
             audio = recognizer.listen(microphon)
+
         except Exception as ex:
             print('ошибка : ', ex)
             return ''
