@@ -1,3 +1,5 @@
 Путь для файла в которм сохраняется прогноз погоды:
 path_weather;C:\Users\Viktor_Greku\Desktop\Погода
+Путь для файла в которм сохраняется запросы в поисковике google:
+path_google;C:\Users\Viktor_Greku\Desktop\search_google
 

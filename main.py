@@ -526,7 +526,7 @@ def goole_search(name_search=''):
         n += 1
         p += str(n) + ') ' + data_resul.get('title') + '\n' + data_resul.get('link') + '\n'
 
-    with open('C:/Python_work/voice-assistant/Запросы/googl.txt', 'w') as file:
+    with open('Запросы/googl.txt', 'w') as file:
         file.write(p)
     return True
 
@@ -571,9 +571,10 @@ for line in file:
 line = line.split(";")
 if line[0] == "path_weather":
     path_weather_save = line[1]
-elif line[0] == 'path_file_open':
-    path_file_open = line[1]
-
+    print("погода", path_weather_save)
+if line[0] == 'path_google':
+    path_google = line[1]
+    print('google:', path_google)
 
 
 
