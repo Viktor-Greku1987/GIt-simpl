@@ -1,6 +1,7 @@
 #coding=utf8
 import speech_recognition
 import pyttsx3
+from speech_recognition import UnknownValueError
 
 recognizer = speech_recognition.Recognizer()
 microphon = speech_recognition.Microphone()
@@ -25,10 +26,13 @@ def recognition_un():
         except Exception as ex:
             print('Я вас не расслышал. Посторите : ', ex)
             return ''
+        except speech_recognition.exceptions.UnknownValueError:
+            print(' я вас слушаю')
         # распознание аудио онлайн через гугл
         global name
         name = recognizer.recognize_google(audio, language='ru')
         name.lower()
+
     return name
 
 
@@ -43,7 +47,7 @@ def init_engine():
         #print(i)
 
     # настраиваем голос на русский женский Татьяна
-    engin.setProperty('voice', voices[0].id)
+    engin.setProperty('voice', voices[1].id)
     # настроим громкость воспроизведения
     # volume = engin.getProperty('volume')
     # print(volume)
@@ -55,3 +59,5 @@ def init_engine():
     #help(engin)
     return engin
 
+#init_engine()
+#recognition_un()

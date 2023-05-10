@@ -1,3 +1,4 @@
+#coding=utf8
 # библиотека для преобразования текста в аудио и его воспроизведение
 import pyttsx3
 # библиотека для снятия горлоса с микрофона и распознания
@@ -37,16 +38,13 @@ import video_recording
 # модуль, подключающий скрытую запись видео
 import hidden_shooting
 name_user = ''
-
-
-
-
+path_weather_save = ''
 
 
 answer = ''
 #recognition.recognition_un()
-
-greeting_BM = ' Вижу вас как на яву! Мое имя Максим. Я голосовой помошник. Давайте познакомимся. Как вас зовут?'
+# Вижу вас как на яву! Мое имя Максим. Я голосовой помошник.
+greeting_BM = '  Давайте познакомимся. Как вас зовут?'
 print(greeting_BM)
 engin = recognition.init_engine()
 recognition.sound(engin, greeting_BM)
@@ -74,7 +72,7 @@ def init_engine():
         #print(i)
 
     # настраиваем голос на русский женский Татьяна
-    engin.setProperty('voice', voices[0].id)
+    engin.setProperty('voice', voices[3].id)
     # настроим громкость воспроизведения
     # volume = engin.getProperty('volume')
     # print(volume)
@@ -283,7 +281,7 @@ def weather(text):
     if check_pogoda == [] :
         return False
 
-    # указать полученый API-ключ отсайта
+    # указать полученый API-ключ от сайта
     appid = 'ecf8f7c99b22ef5a327aa9d6f296cc4c'
     #new_taxt = ' '.join(text[2::])
 
@@ -352,7 +350,7 @@ def weather(text):
     current_date = str(current_date).split('.')[0]
     current_date = current_date.replace(':','_')
     # запишем данные в файл (параметр 'w' указывает на перезщапись файла, если паратмтер 'a' - дозапись файла(добавление новой записи в документ))
-    with open('Погода/Погода ' + text_city+ " "  + current_date +'.txt', 'w') as file:
+    with open(path_weather_save + text_city+ " "  + current_date +'.txt', 'w') as file:
         file.write(answer)
     return answer != ''
 
@@ -546,10 +544,12 @@ def recognize_speech():
             print(comad)
             # получим данные с миукрофона ввиде аудиопересменной
             audio = recognizer.listen(microphon)
-
+        except speech_recognition.exceptions.UnknownValueError:
+            print(' я вас слушаю')
         except Exception as ex:
             print('ошибка : ', ex)
             return ''
+
         # распознание аудио онлайн через гугл
         data = recognizer.recognize_google(audio, language= 'ru')
         return data.lower()
@@ -558,6 +558,23 @@ def recognize_speech():
 #print(answer)
 #goole_search('онлайн Дом')
 #print(answer)
+
+file = open('config.txt','r')
+for line in file:
+    print(line)
+
+    if line == '':
+        line = 'C:'
+    elif line[-1] == '\n':
+        line = line[:len(line)-1]
+
+line = line.split(";")
+if line[0] == "path_weather":
+    path_weather_save = line[1]
+elif line[0] == 'path_file_open':
+    path_file_open = line[1]
+
+
 
 
 while True:
