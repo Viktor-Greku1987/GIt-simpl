@@ -526,7 +526,7 @@ def goole_search(name_search=''):
         n += 1
         p += str(n) + ') ' + data_resul.get('title') + '\n' + data_resul.get('link') + '\n'
 
-    with open('Запросы/googl.txt', 'w') as file:
+    with open(path_google +'googl.txt', 'w') as file:
         file.write(p)
     return True
 
@@ -558,7 +558,7 @@ def recognize_speech():
 #print(answer)
 #goole_search('онлайн Дом')
 #print(answer)
-
+"""
 file = open('config.txt','r')
 for line in file:
     print(line)
@@ -572,11 +572,36 @@ line = line.split(";")
 if line[0] == "path_weather":
     path_weather_save = line[1]
     print("погода", path_weather_save)
+    
 if line[0] == 'path_google':
     path_google = line[1]
     print('google:', path_google)
+"""
+#if line == '':
+    #line = 'C:'
+with open('config.txt','r') as file:
+    while True:
+
+        line = file.readline()
+
+        if line =='':
+            break
+        if line[-1] == '\n':
+            line = line[:len(line) - 1]
+        line = line.split(";")
+        print("line: ", line)
 
 
+        if len(line) == 2:
+            if line[0] == "path_weather":
+                path_weather_save = line[1]
+                print("погода", path_weather_save)
+
+            elif line[0] == 'path_google':
+                path_google = line[1]
+                print('google:', path_google)
+
+#exit(0)
 
 while True:
     text = recognize_speech()

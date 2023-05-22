@@ -13,27 +13,28 @@ def sound(engin, name):
     engin.runAndWait()
 
 def recognition_un():
-    with microphon:
-        data = ''
-        # регулировка окружаюещго шума
-        recognizer.adjust_for_ambient_noise(microphon, duration=2)
-        try:
-            # получим данные с миукрофона ввиде аудиопересменной
-            p = "прошу, произнесите ответ"
-            sound(engin, p)
-            audio = recognizer.listen(microphon)
-            # audio = recognizer.listen(microphon, 5, 5)
-        except Exception as ex:
-            print('Я вас не расслышал. Посторите : ', ex)
-            return ''
-        except speech_recognition.exceptions.UnknownValueError:
-            print(' я вас слушаю')
-        # распознание аудио онлайн через гугл
-        global name
-        name = recognizer.recognize_google(audio, language='ru')
-        name.lower()
-
-    return name
+    while True:
+        with microphon:
+            data = ''
+            # регулировка окружаюещго шума
+            recognizer.adjust_for_ambient_noise(microphon, duration=2)
+            try:
+                # получим данные с миукрофона ввиде аудиопересменной
+                p = "прошу, произнесите ответ"
+                sound(engin, p)
+                audio = recognizer.listen(microphon)
+                # audio = recognizer.listen(microphon, 5, 5)
+            except Exception as ex:
+                print('Я вас не расслышал. Посторите : ', ex)
+                return ''
+           # распознание аудио онлайн через гугл
+            global name
+            try:
+                name = recognizer.recognize_google(audio, language='ru')
+                name.lower()
+            except Exception as ex:
+                continue
+        return name
 
 
 def init_engine():
@@ -47,7 +48,7 @@ def init_engine():
         #print(i)
 
     # настраиваем голос на русский женский Татьяна
-    engin.setProperty('voice', voices[1].id)
+    engin.setProperty('voice', voices[0].id)
     # настроим громкость воспроизведения
     # volume = engin.getProperty('volume')
     # print(volume)
