@@ -37,8 +37,13 @@ import pymorphy2
 import video_recording
 # модуль, подключающий скрытую запись видео
 import hidden_shooting
+from radio_onlane import radio
+from PyQt5 import QtWidgets # все графи ческие элементы
+import sys
 name_user = ''
 path_weather_save = ''
+app = None
+app_radio = None
 
 
 answer = ''
@@ -405,14 +410,51 @@ def calling_camera(text):
     else:
         return False
 
+# ф-ция включения радио
+def radiо_on(text):
+    global app_radio
+    global app
+    name_radio = 'европа плюс'
+    if text == 'европа':
+        if app_radio == None:
+            app = QtWidgets.QApplication([])
+            app_radio = radio(name_radio) # создаем объект класса. Вызов метода init  что выполянет созадние объекта класса.
+        else:
+            app_radio.radio_stop()
+            sys.exit(app.exec())
+            app = QtWidgets.QApplication([])
+            app_radio = radio(name_radio)
+
+    else:
+        # команда не на включение радио
+        return False
+    return True
+
+#  функция выключения радио
+def radio_off(text):
+    global app_radio
+    global app
+    if text == "выключи радио":
+        if app_radio != None:
+            app_radio.radio_stop()
+            sys.exit(app.exec())
+            app = None
+            app_radio = None
+        return True
+    else:
+        return False
+
+
 
 # ф-ция обработки текста и выделения из них команд
 def comands(text):
 
+
     if name_user == '':
         first_hi(text)
     else:
-         if hi_goodby(text) or weather(text) or play_file(text) or goole_search(text) or calling_converter(text) or calling_camera(text):
+         if hi_goodby(text) or weather(text) or play_file(text) or goole_search(text) \
+            or calling_converter(text) or calling_camera(text) or radiо_on(text) or radio_off(text):
             print(answer)
             engin = init_engine()
             sound(engin, answer)
