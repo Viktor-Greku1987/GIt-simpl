@@ -14,6 +14,7 @@ class radio(QtWidgets.QMainWindow): # родитель нашенгго клас
         self.radio_volna = dict()
         self.create_radio_wave()
         current_wave = self.radio_volna.get(name_radio)
+        print("name_radio", name_radio)
         if current_wave != None:
             # вызываем ф-цию воспроизвдения выбранного радио
             self.radio_play(current_wave)
@@ -29,11 +30,12 @@ class radio(QtWidgets.QMainWindow): # родитель нашенгго клас
 
         # задаем плееру что воспроизвести
         self.pleer.setMedia(QMediaContent(QUrl(current_wave)))
+        print("current_wave", current_wave)
         # задать громкость плеера от 0 до 100
         self.pleer.setVolume(50)
         self.pleer.play() # запуск воспроизведения (pause() - пауза), stop() - остнавить воспроизведение
 
-    # функция создвания словая радиволн
+    # функция создвания словаря радиволн
     def create_radio_wave(self):
         #self.radio_volna['европа плюс']="http://europaplus.hostingradio.ru:8014/ep-top256.mp3"
         with open('radio.txt', 'r') as file:
@@ -44,6 +46,8 @@ class radio(QtWidgets.QMainWindow): # родитель нашенгго клас
                 if line[-1] == '\n':
                     line = line[0:len(line)-1]
                 key_radio, URL_radio = line.split('; ')
+                print("key_radio::", key_radio)
+                print(URL_radio)
                 self.radio_volna[key_radio] = URL_radio
 
 
