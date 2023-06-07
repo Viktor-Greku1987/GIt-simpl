@@ -32,7 +32,7 @@ class radio(QtWidgets.QMainWindow): # родитель нашенгго клас
         self.pleer.setMedia(QMediaContent(QUrl(current_wave)))
         print("current_wave", current_wave)
         # задать громкость плеера от 0 до 100
-        self.pleer.setVolume(50)
+        self.pleer.setVolume(5)
         self.pleer.play() # запуск воспроизведения (pause() - пауза), stop() - остнавить воспроизведение
 
     # функция создвания словаря радиволн

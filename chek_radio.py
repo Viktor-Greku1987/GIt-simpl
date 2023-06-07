@@ -1,5 +1,7 @@
 import pymorphy2
+global name_radio
 def chek_radiost(text):
+    print("text",text)
     list_radio = []
     morph = pymorphy2.MorphAnalyzer()
     elem_lst = []
@@ -29,7 +31,9 @@ def chek_radiost(text):
             chek_rad = list(set(key_radio_1) & set(elem_lst))
             if chek_rad !=[]:
                 #print("chek_rad", key_radio )
-                return key_radio
+                name_radio = key_radio
+
+                return name_radio
             else:
                 print('радио не найдино')
                 return ''

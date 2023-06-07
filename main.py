@@ -427,15 +427,32 @@ def calling_camera(text):
 def radiо_on(text):
     global app_radio
     global app
+    global name_radio
+    '''
+    text = text.split()
+    text = ' '.join(text)
 
+    text_2 = text.split('+')
+    potok_1 = threading.Thread(target=radiо_on, args=text_2)
+    potok_1.start()
+    '''
     chek_on_radio = ['радио']
     text_1 = text.split()
     chek_list_on_radio = list(set(text_1) & set(chek_on_radio))
     if chek_list_on_radio != []:
         name_radio = chek_radio.chek_radiost(text)
-        #print("name_radio", name_radio)
+        print("name_radio___", name_radio)
         if name_radio != '':
+            print("name_radio+++", name_radio)
+            name_radio = name_radio.split()
+            print('name_radio_1', name_radio)
+            name_radio = ' '.join(name_radio)
 
+            name_radio = name_radio.split('+')
+            print('name_radio----', name_radio)
+            potok_1 = threading.Thread(target=potok_radio_on, args=name_radio)
+            potok_1.start()
+            """
             if app_radio == None:
 
                 app = QtWidgets.QApplication([])
@@ -446,11 +463,28 @@ def radiо_on(text):
                 sys.exit(app.exec())
                 app = QtWidgets.QApplication([])
                 app_radio = radio(name_radio)
-
+            """
         else:
             # команда не на включение радио
             return False
         return True
+# функция запускает в потоке радио
+def potok_radio_on(name_radio):
+    global app_radio
+    print("!")
+    global app
+    if app_radio == None:
+
+        app = QtWidgets.QApplication([])
+        print("name_radio::::",name_radio)
+        app_radio = radio(name_radio)  # создаем объект класса. Вызов метода init  что выполянет созадние объекта класса.
+        print(app_radio)
+    else:
+        app_radio.radio_stop()
+        sys.exit(app.exec())
+        app = QtWidgets.QApplication([])
+        app_radio = radio(name_radio)
+
 
 #radiо_on('Викторию, включи радио европы плюсы') # проверка на пработоспособность ф-ции вклбчения радио
 #  функция выключения радио
