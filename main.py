@@ -443,7 +443,7 @@ def radiо_on(text):
         name_radio = chek_radio.chek_radiost(text)
         print("name_radio___", name_radio)
         if name_radio != '':
-            print("name_radio+++", name_radio)
+
             name_radio = name_radio.split()
             print('name_radio_1', name_radio)
             name_radio = ' '.join(name_radio)

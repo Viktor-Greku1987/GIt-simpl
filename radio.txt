@@ -1,1 +1,2 @@
 европа плюс; http://europaplus.hostingradio.ru:8014/ep-top256.mp3
+вести; https://icecast-vgtrk.cdnvideo.ru/vestifm_aac_64kbps
