@@ -1,2 +1,5 @@
 европа плюс; http://europaplus.hostingradio.ru:8014/ep-top256.mp3
 вести; https://icecast-vgtrk.cdnvideo.ru/vestifm_aac_64kbps
+светик; http://online.svitle.org:6728/kids.128.mp3
+дети; http://192.34.153.102:8000/kids.mp3
+цеткин; https://zt03.cdn.eurozet.pl/ZETKID.mp3

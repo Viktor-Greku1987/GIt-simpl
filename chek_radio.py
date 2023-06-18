@@ -16,7 +16,9 @@ def chek_radiost(text):
         result_list.append(res)
     for elem in result_list:
         elem_lst.append(elem)
+    name_radio = ""
     with open('radio.txt', 'r') as file:
+
         while True:
             line = file.readline()
             if line == '':
@@ -26,7 +28,7 @@ def chek_radiost(text):
             key_radio, URL_radio = line.split('; ')
 
             key_radio_1 = key_radio.split()
-            #print("key_radio: ",key_radio)
+            print("key_radio_1: ",key_radio_1)
             #print(elem_lst)
             chek_rad = list(set(key_radio_1) & set(elem_lst))
             if chek_rad !=[]:
@@ -34,10 +36,12 @@ def chek_radiost(text):
                 name_radio = key_radio
 
                 return name_radio
-            else:
-                print('радио не найдино')
-                return ''
-
+            #else:
+                #print('радио не найдино')
+                #return ''
+    if name_radio == '':
+        print('радио не найдино')
+        return ''
 
 
 #chek_radiost('Викторию, включи радио европы плюсы')

@@ -411,14 +411,19 @@ def calling_camera(text):
         if lst_rezult_chek_2 != []:
             potok_3 = threading.Thread(target=camera.VideoCap)
             potok_3.start()
+            return True
         elif lst_rezult_record_3 != []:
             potok_4 = threading.Thread(target=video_recording.record_video)
             potok_4.start()
+            return True
         elif lst_rezult_hidden_shooting_4 != []:
             potok_5 = threading.Thread(target=hidden_shooting.record_hidden)
             potok_5.start()
+            return True
+        else:
+            return False
 
-        return True
+
     else:
         return False
 
@@ -437,6 +442,7 @@ def radiо_on(text):
     potok_1.start()
     '''
     chek_on_radio = ['радио']
+    print("!!!!")
     text_1 = text.split()
     chek_list_on_radio = list(set(text_1) & set(chek_on_radio))
     if chek_list_on_radio != []:
@@ -450,8 +456,17 @@ def radiо_on(text):
 
             name_radio = name_radio.split('+')
             print('name_radio----', name_radio)
-            potok_1 = threading.Thread(target=potok_radio_on, args=name_radio)
-            potok_1.start()
+            if app_radio == None:
+                potok_1 = threading.Thread(target=potok_radio_on, args=name_radio)
+                potok_1.start()
+            else:
+                print("^^^^")
+                app_radio.radio_stop()
+                print('sdsfjkhkfhg')
+                #sys.exit(app.exec())
+                print('chjdfkjjl')
+                potok_1 = threading.Thread(target=potok_radio_on, args=name_radio)
+                potok_1.start()
             """
             if app_radio == None:
 
@@ -481,7 +496,7 @@ def potok_radio_on(name_radio):
         print(app_radio)
     else:
         app_radio.radio_stop()
-        sys.exit(app.exec())
+        #sys.exit(app.exec())
         app = QtWidgets.QApplication([])
         app_radio = radio(name_radio)
 
